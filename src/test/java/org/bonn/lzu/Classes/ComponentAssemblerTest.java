@@ -1,6 +1,7 @@
 package org.bonn.lzu.Classes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -64,10 +65,57 @@ public class ComponentAssemblerTest {
         ComponentAssembler assembler = new ComponentAssembler();
         var cID = assembler.addComponent("component", "src/test/resources/classLoader/jarDir/Minimal_Komponent.jar");
         assembler.createInstance(cID);
+        // wait for 2 seconds to let the component run
+
         assembler.stopInstance(cID);
 
         assertEquals(State.STOPPED, assembler.componentClassLoaders.get(cID).getState());
 
+    }
+
+    @Test
+    void testStopInstanceWithTiming() throws ClassNotFoundException, IOException, IllegalAccessException, InstantiationException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, InterruptedException {
+        ComponentAssembler assembler = new ComponentAssembler();
+        var cID = assembler.addComponent("component", "src/test/resources/classLoader/jarDir/Minimal_Komponent.jar");
+        assembler.createInstance(cID);
+        // wait for 2 seconds to let the component run
+
+        
+        Thread.sleep(2000);
+
+        assembler.stopInstance(cID);
+
+        assertEquals(State.STOPPED, assembler.componentClassLoaders.get(cID).getState());
+
+        Thread.sleep(2000);
+
+    }
+
+    @Test
+    void testStopDifferentInstancesWithTiming() throws ClassNotFoundException, IOException, IllegalAccessException, InstantiationException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, InterruptedException {
+        ComponentAssembler assembler = new ComponentAssembler();
+
+        // Add first component
+        var cID1 = assembler.addComponent("component", "src/test/resources/classLoader/jarDir/Minimal_Komponent.jar");
+        assembler.createInstance(cID1);
+
+        // Add second component
+        var cID2 = assembler.addComponent("component", "src/test/resources/classLoader/jarDir/codesOOKA-1.0-SNAPSHOT.jar");
+        assembler.createInstance(cID2);
+
+        // Wait for 2 seconds to let the components run
+        Thread.sleep(2000);
+
+        // Stop the first component
+        assembler.stopInstance(cID1);
+        assertEquals(State.STOPPED, assembler.componentClassLoaders.get(cID1).getState());
+
+        // Stop the second component
+        assembler.stopInstance(cID2);
+        assertEquals(State.STOPPED, assembler.componentClassLoaders.get(cID2).getState());
+
+        // Wait for 2 seconds
+        Thread.sleep(2000);
     }
 
     @Test
@@ -105,12 +153,31 @@ public class ComponentAssemblerTest {
         // Wait for both threads to finish
         latch.await();
 
-        // sleep main thread for 1 second
-        Thread.sleep(1000);
         
         // verify 2 components are in the Map
         assertEquals(2, assembler.componentClassLoaders.size());
         assembler.listComponentsWithState(State.STARTED);
 
+    }
+
+
+    @Test
+    void testDeleteComponent() throws ClassNotFoundException, IllegalAccessException, InstantiationException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, IOException, InterruptedException {
+        ComponentAssembler assembler = new ComponentAssembler();
+        
+        // Add a component
+        var cID = assembler.addComponent("component", "src/test/resources/classLoader/jarDir/Minimal_Komponent.jar");
+        assembler.createInstance(cID);
+        
+        Thread.sleep(2000);
+        // Stop the component
+        assembler.stopInstance(cID);
+        
+        // Call deleteComponent on the component
+        assembler.deleteComponent(cID);
+        
+        // Assert that the component is removed from componentClassLoaders map
+        assertNull(assembler.componentClassLoaders.get(cID));
+        
     }
 }
