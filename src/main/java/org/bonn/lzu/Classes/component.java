@@ -12,6 +12,7 @@ class Component {
     private String name;
     private String mainClass;
     private Class<?> mainClassObject;
+    private Thread thread = null;
     private State state;
 
     public Component(int id, String name, String mainClass, Class<?> mainClassObject, State state) {
@@ -42,7 +43,16 @@ class Component {
         return state;
     }
 
+    public void stopThread() {
+        thread.interrupt();
+        thread = null;
+    }
+
     public void setState(State state) {
         this.state = state;
+    }
+
+    public void addThread(Thread thread) {
+        this.thread = thread;
     }
 }

@@ -50,6 +50,7 @@ public class ComponentAssembler {
         });
 
         thread.start();
+        component.addThread(thread);
 
         component.setState(State.STARTED);
 
@@ -64,7 +65,7 @@ public class ComponentAssembler {
         Object init_object = init_class.getDeclaredConstructor().newInstance();
 
         init_class.getMethod("stop").invoke(init_object);
-
+        component.stopThread();
         component.setState(State.STOPPED);
 
     }
@@ -74,13 +75,11 @@ public class ComponentAssembler {
         Component component = componentClassLoaders.get(componentID);
         if (component.getState() != State.STOPPED) {
             System.out.println("Component is not stopped");
-        } else {
-            System.out.println("Stopping component");
             this.stopInstance(componentID);
+        } else {
+            System.out.println("Already stopped component");
         }
-        
         componentClassLoaders.remove(componentID);
-
     }
 
     public void listComponentsWithState(State state) {
