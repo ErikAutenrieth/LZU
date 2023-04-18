@@ -40,7 +40,6 @@ public class ComponentAssemblerTest {
 
         // print all Created Components
         assembler.listComponentsWithState(State.Created);
-
     }
 
     @Test
@@ -51,8 +50,6 @@ public class ComponentAssemblerTest {
 
         // assert that the component in the assembler is in the state "Started"
         assertEquals(State.STARTED, assembler.componentClassLoaders.get(cID).getState());
-        
-
     }
 
     @Test
@@ -70,7 +67,6 @@ public class ComponentAssemblerTest {
         assembler.stopInstance(cID);
 
         assertEquals(State.STOPPED, assembler.componentClassLoaders.get(cID).getState());
-
     }
 
     @Test
@@ -88,7 +84,6 @@ public class ComponentAssemblerTest {
         assertEquals(State.STOPPED, assembler.componentClassLoaders.get(cID).getState());
 
         Thread.sleep(2000);
-
     }
 
     @Test
@@ -157,7 +152,6 @@ public class ComponentAssemblerTest {
         // verify 2 components are in the Map
         assertEquals(2, assembler.componentClassLoaders.size());
         assembler.listComponentsWithState(State.STARTED);
-
     }
 
 
@@ -178,6 +172,26 @@ public class ComponentAssemblerTest {
         
         // Assert that the component is removed from componentClassLoaders map
         assertNull(assembler.componentClassLoaders.get(cID));
-        
     }
+
+    @Test
+    void testDeleteMultipleComponents() throws ClassNotFoundException, IllegalAccessException, InstantiationException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, IOException, InterruptedException {
+        ComponentAssembler assembler = new ComponentAssembler();
+
+        var cID = assembler.addComponent("component", "src/test/resources/classLoader/jarDir/Minimal_Komponent.jar");
+        assembler.createInstance(cID);
+        assembler.createInstance(cID);
+        assembler.createInstance(cID);
+
+        Thread.sleep(2000);
+
+
+        assembler.deleteComponent(cID);
+
+
+        // Assert that the component is removed from componentClassLoaders map
+        assertNull(assembler.componentClassLoaders.get(cID));
+    }
+
+
 }

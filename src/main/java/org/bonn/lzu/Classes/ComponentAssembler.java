@@ -44,6 +44,7 @@ public class ComponentAssembler {
         Thread thread = new Thread(() -> {
             try {
                 init_class.getMethod("start").invoke(init_object);
+                System.out.println("Thread is created");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -53,7 +54,6 @@ public class ComponentAssembler {
         component.addThread(thread);
 
         component.setState(State.STARTED);
-
     }
 
     public void stopInstance(String componentID)
@@ -67,7 +67,6 @@ public class ComponentAssembler {
         init_class.getMethod("stop").invoke(init_object);
         component.stopThread();
         component.setState(State.STOPPED);
-
     }
 
     // delete a component by checking ensuring it is stopped and then removing it from the map
