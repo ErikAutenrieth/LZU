@@ -25,7 +25,7 @@ public class ComponentAssembler {
             // Create a new component object
             Component component = new Component(classLoaderSize, componentName, mainClass, mainClassObject,
                     State.Created);
-    
+
             // Store the class loader in the map
             componentClassLoaders.put(componentID, component);
         }
@@ -89,5 +89,4 @@ public class ComponentAssembler {
             }
         }
     }
-
 }
