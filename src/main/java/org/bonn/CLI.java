@@ -10,16 +10,21 @@ public class CLI {
     public static void main(String[] args) throws Exception {
 
         // Beispiel Pfad:
-        // src/test/resources/classLoader/jarDir/Minimal_Komponent.jar
+        // src/test/resources/classLoader/jarDir/codesOOKA-1.0-SNAPSHOT.jar
 
         ComponentOperationExecutor componentOperationExecutor = new ComponentOperationExecutor();
         ComponentAssembler componentAssembler = new ComponentAssembler();
         String componentID = null;
         Scanner scanner = new Scanner(System.in);
 
+        printMenuOptions();
         while (true) {
-            printMenuOptions();
-            System.out.println("Ihre Eingabe:");
+            Thread.sleep(1000);
+
+            if (componentID != null) {
+                System.out.println("==========================================");
+            }
+            System.out.println("\nIhre Eingabe:");
             String input = scanner.nextLine();
             switch (input) {
                 case "1":
@@ -30,7 +35,9 @@ public class CLI {
 
                     componentID = componentOperationExecutor.execute(new AddComponentOperation(componentAssembler, componentName, componentUrl));
                     componentOperationExecutor.execute(new CreateInstanceOperation(componentAssembler, componentID));
-                    System.out.println("Komponente hinzugefügt. Die ID ist: " + componentID);
+                    System.out.println("\nKomponente hinzugefügt. \nDie ID ist: " + componentID + "\n");
+
+                    System.out.println("==========================================");
                     break;
                 case "2":
                     if (componentID == null) {
@@ -39,6 +46,7 @@ public class CLI {
                     }
                     System.out.println("Welcher Prozess soll gestoppt werden? Geben Sie die ID an:");
                     String compID = scanner.nextLine();
+                    System.out.println("==========================================");
                     componentOperationExecutor.execute(new StopInstanceOperation(componentAssembler, compID));
                     break;
                 case "3":
@@ -48,7 +56,9 @@ public class CLI {
                     }
                     System.out.println("Welcher Prozess soll gelöscht werden? Geben Sie die ID an:");
                     String compID2 = scanner.nextLine();
+                    System.out.println("==========================================");
                     componentOperationExecutor.execute(new DeleteComponentOperation(componentAssembler, compID2));
+                    componentID = null;
                     break;
                 case "0":
                     if (componentID != null) {
@@ -56,6 +66,9 @@ public class CLI {
                     }
                     System.out.println("Beende Programm...");
                     System.exit(0);
+                case "help":
+                    printMenuOptions();
+                    break;
                 default:
                     System.out.println("Ungültige Eingabe");
                     break;
@@ -74,6 +87,7 @@ public class CLI {
         System.out.println("|    2   | Instanz stoppen                    |");
         System.out.println("|    3   | Komponente löschen                 |");
         System.out.println("|    0   | Beenden                            |");
+        System.out.println("|  help  | LZU Menu                           |");
         System.out.println("===============================================\n");
 
     }
