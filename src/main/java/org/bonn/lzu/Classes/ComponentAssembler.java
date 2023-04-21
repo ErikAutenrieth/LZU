@@ -5,11 +5,16 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.bonn.lzu.Classes.Component.State;
 import org.bonn.lzu.helper.JarReader;
 
 public class ComponentAssembler {
 
-    final protected Map<String, Component> componentClassLoaders = new ConcurrentHashMap<String, Component>();
+    final private Map<String, Component> componentClassLoaders = new ConcurrentHashMap<String, Component>();
+
+    public Map<String, Component> getComponentClassLoaders() {
+        return componentClassLoaders;
+    }
 
     public String addComponent(String componentName, String componentUrl) throws IOException, ClassNotFoundException {
 

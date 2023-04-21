@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.CountDownLatch;
 
+import org.bonn.lzu.Classes.Component.State;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -36,7 +37,7 @@ public class ComponentAssemblerTest {
         assembler.addComponent("component", "src/test/resources/classLoader/jarDir/Minimal_Komponent.jar");
 
         // Verify that the component was added
-        assertEquals(1, assembler.componentClassLoaders.size());
+        assertEquals(1, assembler.getComponentClassLoaders().size());
 
         // print all Created Components
         assembler.listComponentsWithState(State.Created);
@@ -49,7 +50,7 @@ public class ComponentAssemblerTest {
         assembler.createInstance(cID);
 
         // assert that the component in the assembler is in the state "Started"
-        assertEquals(State.STARTED, assembler.componentClassLoaders.get(cID).getState());
+        assertEquals(State.STARTED, assembler.getComponentClassLoaders().get(cID).getState());
     }
 
     @Test
@@ -66,7 +67,7 @@ public class ComponentAssemblerTest {
 
         assembler.stopInstance(cID);
 
-        assertEquals(State.STOPPED, assembler.componentClassLoaders.get(cID).getState());
+        assertEquals(State.STOPPED, assembler.getComponentClassLoaders().get(cID).getState());
     }
 
     @Test
@@ -81,7 +82,7 @@ public class ComponentAssemblerTest {
 
         assembler.stopInstance(cID);
 
-        assertEquals(State.STOPPED, assembler.componentClassLoaders.get(cID).getState());
+        assertEquals(State.STOPPED, assembler.getComponentClassLoaders().get(cID).getState());
 
         Thread.sleep(2000);
     }
@@ -103,11 +104,11 @@ public class ComponentAssemblerTest {
 
         // Stop the first component
         assembler.stopInstance(cID1);
-        assertEquals(State.STOPPED, assembler.componentClassLoaders.get(cID1).getState());
+        assertEquals(State.STOPPED, assembler.getComponentClassLoaders().get(cID1).getState());
 
         // Stop the second component
         assembler.stopInstance(cID2);
-        assertEquals(State.STOPPED, assembler.componentClassLoaders.get(cID2).getState());
+        assertEquals(State.STOPPED, assembler.getComponentClassLoaders().get(cID2).getState());
 
         // Wait for 2 seconds
         Thread.sleep(2000);
@@ -150,7 +151,7 @@ public class ComponentAssemblerTest {
 
         
         // verify 2 components are in the Map
-        assertEquals(2, assembler.componentClassLoaders.size());
+        assertEquals(2, assembler.getComponentClassLoaders().size());
         assembler.listComponentsWithState(State.STARTED);
     }
 
@@ -171,7 +172,7 @@ public class ComponentAssemblerTest {
         assembler.deleteComponent(cID);
         
         // Assert that the component is removed from componentClassLoaders map
-        assertNull(assembler.componentClassLoaders.get(cID));
+        assertNull(assembler.getComponentClassLoaders().get(cID));
     }
 
     @Test
@@ -190,7 +191,7 @@ public class ComponentAssemblerTest {
 
 
         // Assert that the component is removed from componentClassLoaders map
-        assertNull(assembler.componentClassLoaders.get(cID));
+        assertNull(assembler.getComponentClassLoaders().get(cID));
     }
 
 

@@ -1,19 +1,17 @@
 package org.bonn.lzu.Classes;
 
-
-enum State {
-    STARTED,
-    STOPPED,
-    Created
-}
-
-class Component {
+public class Component {
     private int id;
     private String name;
     private String mainClass;
     private Class<?> mainClassObject;
     private Thread thread = null;
     private State state;
+    public enum State {
+        STARTED,
+        STOPPED,
+        Created
+    }
 
     public Component(int id, String name, String mainClass, Class<?> mainClassObject, State state) {
         this.id = id;
