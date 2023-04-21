@@ -59,7 +59,7 @@ public class ComponentAssemblerTest {
     }
 
     @Test
-    void testStopInstance() throws ClassNotFoundException, IOException, IllegalAccessException, InstantiationException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+    void testStopInstance() throws ClassNotFoundException, IOException, IllegalAccessException, InstantiationException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, InterruptedException {
         ComponentAssembler assembler = new ComponentAssembler();
         var cID = assembler.addComponent("component", "src/test/resources/classLoader/jarDir/Minimal_Komponent.jar");
         assembler.createInstance(cID);

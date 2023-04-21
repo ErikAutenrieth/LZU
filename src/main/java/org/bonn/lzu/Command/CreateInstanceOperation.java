@@ -4,7 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.bonn.lzu.Classes.ComponentAssembler;
 
-class CreateInstanceOperation implements ComponentAssemblerOperation {
+public class CreateInstanceOperation implements ComponentAssemblerOperation {
     private ComponentAssembler assembler;
     private String componentID;
 

@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.bonn.lzu.Classes.ComponentAssembler;
 
-class AddComponentOperation implements ComponentAssemblerOperation {
+public class AddComponentOperation implements ComponentAssemblerOperation {
     private ComponentAssembler assembler;
     private String componentName;
     private String componentUrl;

@@ -65,7 +65,7 @@ public class CommandTest {
     }
 
     @Test
-    void testStopInstance() throws ClassNotFoundException, IOException, IllegalAccessException, InstantiationException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+    void testStopInstance() throws ClassNotFoundException, IOException, IllegalAccessException, InstantiationException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, InterruptedException {
         componentAssembler = new ComponentAssembler();
         addComponentOperation = new AddComponentOperation(componentAssembler, "component", "src/test/resources/classLoader/jarDir/Minimal_Komponent.jar");
         String componentID = addComponentOperation.execute();
@@ -77,7 +77,6 @@ public class CommandTest {
         // assert that the component in the assembler is in the state "Stopped"
         assertEquals(State.STOPPED, componentAssembler.getComponentClassLoaders().get(componentID).getState());
     }
-
 
     @Test
     void testDeleteComponent() throws ClassNotFoundException, IOException, IllegalAccessException, InstantiationException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, InterruptedException {
@@ -101,10 +100,41 @@ public class CommandTest {
         deleteComponentOperation.execute();
 
 
+        assertNull(componentAssembler.getComponentClassLoaders().get(componentID));
+    }
 
 
-        // assert that the component in the assembler is in the state "Deleted"
-        //TODO add test for deleted component i.e. componentID is not in componentAssembler.getComponentClassLoaders() 
+
+    @Test
+    void testMultipleDeleteComponents() throws ClassNotFoundException, IOException, IllegalAccessException, InstantiationException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, InterruptedException{
+        componentAssembler = new ComponentAssembler();
+        addComponentOperation = new AddComponentOperation(componentAssembler, "component", "src/test/resources/classLoader/jarDir/Minimal_Komponent.jar");
+        addComponentOperation = new AddComponentOperation(componentAssembler, "component", "src/test/resources/classLoader/jarDir/Minimal_Komponent.jar");
+
+        String componentID = addComponentOperation.execute();
+        String componentID2 = addComponentOperation.execute();
+
+        createInstanceOperation = new CreateInstanceOperation(componentAssembler, componentID);
+        createInstanceOperation.execute();
+        createInstanceOperation = new CreateInstanceOperation(componentAssembler, componentID2);
+        createInstanceOperation.execute();
+
+        Thread.sleep(2000);
+
+        stopInstanceOperation = new StopInstanceOperation(componentAssembler, componentID);
+        stopInstanceOperation.execute();
+        stopInstanceOperation = new StopInstanceOperation(componentAssembler, componentID2);
+        stopInstanceOperation.execute();
+
+        Thread.sleep(2000);
+
+        deleteComponentOperation = new DeleteComponentOperation(componentAssembler, componentID);
+        deleteComponentOperation.execute();
+        deleteComponentOperation = new DeleteComponentOperation(componentAssembler, componentID2);
+        deleteComponentOperation.execute();
+
+        assertNull(componentAssembler.getComponentClassLoaders().get(componentID));
+        assertNull(componentAssembler.getComponentClassLoaders().get(componentID2));
 
     }
 

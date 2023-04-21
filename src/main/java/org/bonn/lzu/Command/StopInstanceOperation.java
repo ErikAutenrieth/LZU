@@ -15,7 +15,7 @@ public class StopInstanceOperation implements ComponentAssemblerOperation {
 
     @Override
     public String execute() throws ClassNotFoundException, IllegalAccessException, InstantiationException,
-            IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, InterruptedException {
         assembler.stopInstance(componentID);
         return "Instance created";
     }

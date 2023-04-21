@@ -38,7 +38,7 @@ public class ComponentAssembler {
     }
 
     public void createInstance(String componentID)
-            throws ClassNotFoundException, IllegalAccessException, InstantiationException, IllegalArgumentException,
+            throws IllegalAccessException, InstantiationException, IllegalArgumentException,
             InvocationTargetException, NoSuchMethodException, SecurityException {
 
         Component component = componentClassLoaders.get(componentID);
@@ -62,9 +62,8 @@ public class ComponentAssembler {
     }
 
     public void stopInstance(String componentID)
-            throws ClassNotFoundException, IllegalAccessException, InstantiationException, IllegalArgumentException,
+            throws IllegalAccessException, InstantiationException, IllegalArgumentException,
             InvocationTargetException, NoSuchMethodException, SecurityException {
-
         Component component = componentClassLoaders.get(componentID);
         Class<?> init_class = component.mainClassObject();
         Object init_object = init_class.getDeclaredConstructor().newInstance();
@@ -75,14 +74,14 @@ public class ComponentAssembler {
     }
 
     // delete a component by checking ensuring it is stopped and then removing it from the map
-    public void deleteComponent(String componentID) throws ClassNotFoundException, IllegalAccessException, InstantiationException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+    public void deleteComponent(String componentID) throws ClassNotFoundException, IllegalAccessException, InstantiationException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, InterruptedException {
         Component component = componentClassLoaders.get(componentID);
         if (component.getState() != State.STOPPED) {
-            System.out.println("Component is not stopped");
             this.stopInstance(componentID);
         } else {
             System.out.println("Already stopped component");
         }
+        System.out.println("Deleting component with ID: " + componentID);
         componentClassLoaders.remove(componentID);
     }
 
