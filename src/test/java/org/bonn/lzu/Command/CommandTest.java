@@ -1,8 +1,5 @@
 package org.bonn.lzu.Command;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -15,6 +12,8 @@ import org.bonn.lzu.Command.AddComponentOperation;
 import org.bonn.lzu.Command.CreateInstanceOperation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CommandTest {
     private ComponentAssembler componentAssembler;
@@ -81,22 +80,32 @@ public class CommandTest {
 
 
     @Test
-    void testDeleteComponent() throws ClassNotFoundException, IOException, IllegalAccessException, InstantiationException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+    void testDeleteComponent() throws ClassNotFoundException, IOException, IllegalAccessException, InstantiationException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, InterruptedException {
+
         componentAssembler = new ComponentAssembler();
         addComponentOperation = new AddComponentOperation(componentAssembler, "component", "src/test/resources/classLoader/jarDir/Minimal_Komponent.jar");
+
         String componentID = addComponentOperation.execute();
+
         createInstanceOperation = new CreateInstanceOperation(componentAssembler, componentID);
         createInstanceOperation.execute();
+
+        Thread.sleep(2000);
+
+        stopInstanceOperation = new StopInstanceOperation(componentAssembler, componentID);
+        stopInstanceOperation.execute();
+
+        Thread.sleep(2000);
+
         deleteComponentOperation = new DeleteComponentOperation(componentAssembler, componentID);
         deleteComponentOperation.execute();
+
+
+
 
         // assert that the component in the assembler is in the state "Deleted"
         //TODO add test for deleted component i.e. componentID is not in componentAssembler.getComponentClassLoaders() 
 
     }
-
-
-
-
 
 }

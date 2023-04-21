@@ -16,7 +16,7 @@ public class DeleteComponentOperation implements ComponentAssemblerOperation {
     @Override
     public String execute() throws ClassNotFoundException, IllegalAccessException, InstantiationException,
             IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-        assembler.stopInstance(componentID);
+        assembler.deleteComponent(componentID);
         return "component deleted";
     }
 }
