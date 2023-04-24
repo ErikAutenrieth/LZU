@@ -13,3 +13,38 @@ Die Methode `deleteComponent()` stellt sicher, dass eine Komponente gestoppt ist
 Die `ComponentAssembler`-Klasse verwendet Java-Reflexion, um Komponentenklassen dynamisch aus JAR-Dateien zu laden und Instanzen zu erstellen. Die Methode `addComponent()` erstellt einen neuen Klassenlader für die Komponente und lädt die Hauptklasse der Komponente mit der Methode `loadClass()`. Anschließend erstellt sie eine neue Instanz der Hauptklasse mit Reflexion, was als Konstruktionsphase der Komponente betrachtet werden kann.
 
 Insgesamt implementiert die `ComponentAssembler`-Klasse grundlegende Konzepte des Komponentenlebenszyklus und der Konstruktion gemäß Crnkovic's Framework.
+
+
+
+- Classification Framework
+    - Composition
+        - Interface
+        - Data
+        - Control
+    - Execution
+        - Independent
+        - Dependent
+        - Coexistent
+    - Mobility
+        - Location
+        - Time
+        - Execution
+    - Technology
+        - Language
+        - Platform
+        - Middleware
+- Component Assembler
+    - Composition
+        - Interface
+        - Control
+    - Execution
+        - Independent
+        - Coexistent
+    - Mobility
+        - Location
+        - Time
+        - Execution
+    - Technology
+        - Language: Java
+        - Platform: Java platform
+        - Middleware: None
