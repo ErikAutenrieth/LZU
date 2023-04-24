@@ -4,7 +4,6 @@
 
 # ComponentAssembler - Komponentenlebenszyklus und Konstruktion
 
-Die `ComponentAssembler`-Klasse im bereitgestellten Code scheint ein Komponentenmodell zu implementieren, das einigen der Kriterien von Crnkovic's Framework entspricht, insbesondere in den Bereichen Komponentenlebenszyklus und Konstruktion.
 
 ## Lebenszyklus
 Die `ComponentAssembler`-Klasse stellt Methoden zum Erstellen und Stoppen von Komponenteninstanzen bereit sowie zur Überprüfung des Zustands von Komponenten. Die Methode `createInstance()` erstellt einen neuen Thread, um die `start()`-Methode der Komponente aufzurufen, was als Startphase des Komponentenlebenszyklus betrachtet werden kann. Ebenso ruft die Methode `stopInstance()` die `stop()`-Methode der Komponente auf, was die Stoppphase des Komponentenlebenszyklus darstellt. 
