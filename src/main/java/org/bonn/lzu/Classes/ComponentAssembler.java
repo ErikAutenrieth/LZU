@@ -5,11 +5,16 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.bonn.lzu.Classes.Component.State;
 import org.bonn.lzu.helper.JarReader;
 
 public class ComponentAssembler {
 
-    final protected Map<String, Component> componentClassLoaders = new ConcurrentHashMap<String, Component>();
+    final private Map<String, Component> componentClassLoaders = new ConcurrentHashMap<String, Component>();
+
+    public Map<String, Component> getComponentClassLoaders() {
+        return componentClassLoaders;
+    }
 
     public String addComponent(String componentName, String componentUrl) throws IOException, ClassNotFoundException {
 
@@ -33,7 +38,7 @@ public class ComponentAssembler {
     }
 
     public void createInstance(String componentID)
-            throws ClassNotFoundException, IllegalAccessException, InstantiationException, IllegalArgumentException,
+            throws IllegalAccessException, InstantiationException, IllegalArgumentException,
             InvocationTargetException, NoSuchMethodException, SecurityException {
 
         Component component = componentClassLoaders.get(componentID);
@@ -57,9 +62,8 @@ public class ComponentAssembler {
     }
 
     public void stopInstance(String componentID)
-            throws ClassNotFoundException, IllegalAccessException, InstantiationException, IllegalArgumentException,
+            throws IllegalAccessException, InstantiationException, IllegalArgumentException,
             InvocationTargetException, NoSuchMethodException, SecurityException {
-
         Component component = componentClassLoaders.get(componentID);
         Class<?> init_class = component.mainClassObject();
         Object init_object = init_class.getDeclaredConstructor().newInstance();
@@ -70,14 +74,14 @@ public class ComponentAssembler {
     }
 
     // delete a component by checking ensuring it is stopped and then removing it from the map
-    public void deleteComponent(String componentID) throws ClassNotFoundException, IllegalAccessException, InstantiationException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+    public void deleteComponent(String componentID) throws ClassNotFoundException, IllegalAccessException, InstantiationException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, InterruptedException {
         Component component = componentClassLoaders.get(componentID);
         if (component.getState() != State.STOPPED) {
-            System.out.println("Component is not stopped");
             this.stopInstance(componentID);
         } else {
             System.out.println("Already stopped component");
         }
+        System.out.println("Deleting component with ID: " + componentID);
         componentClassLoaders.remove(componentID);
     }
 
