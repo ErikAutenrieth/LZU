@@ -16,23 +16,7 @@ Insgesamt implementiert die `ComponentAssembler`-Klasse grundlegende Konzepte de
 
 
 
-- Classification Framework
-    - Composition
-        - Interface
-        - Data
-        - Control
-    - Execution
-        - Independent
-        - Dependent
-        - Coexistent
-    - Mobility
-        - Location
-        - Time
-        - Execution
-    - Technology
-        - Language
-        - Platform
-        - Middleware
+
 - Component Assembler
     - Composition
         - Interface
