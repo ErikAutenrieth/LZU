@@ -4,7 +4,9 @@ import org.bonn.lzu.Classes.ComponentAssembler;
 import org.bonn.lzu.Command.*;
 
 import java.util.Scanner;
-
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 public class Main {
 
     public static void main(String[] args) throws Exception {
@@ -33,13 +35,20 @@ public class Main {
                     System.out.println("Bitte geben Sie den Pfad zur JAR-Datei ein:");
                     String componentUrl = scanner.nextLine();
 
-                    componentID = componentOperationExecutor
-                            .execute(new AddComponentOperation(componentAssembler, componentName, componentUrl));
-                    componentOperationExecutor.execute(new CreateInstanceOperation(componentAssembler, componentID));
-                    System.out.println("\nKomponente hinzugefügt. \nDie ID ist: " + componentID + "\n");
+                    // Checkt ob der gegebene Pfad existiert
+                    Path path = Paths.get(componentUrl);
+                    if (Files.exists(path)) {
+                        componentID = componentOperationExecutor
+                                .execute(new AddComponentOperation(componentAssembler, componentName, componentUrl));
+                        componentOperationExecutor.execute(new CreateInstanceOperation(componentAssembler, componentID));
+                        System.out.println("\nKomponente hinzugefügt. \nDie ID ist: " + componentID + "\n");
 
-                    System.out.println("==========================================");
-                    break;
+                        System.out.println("==========================================");
+                        break;
+                    } else {
+                        System.out.println("Der Pfad existiert nicht.");
+                        break;
+                    }
                 case "2":
                     if (componentID == null) {
                         System.out.println("Es wurde noch keine Komponente hinzugefügt.");
